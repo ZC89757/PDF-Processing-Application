@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: pdf-app
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pdfapp
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+storage:
+  root: /data/files
+
+logging:
+  level:
+    com.app.pdf: DEBUG

@@ -1,0 +1,21 @@
+{
+  "name": "pdf-reader-frontend",
+  "version": "1.0.0",
+  "description": "PDF Reader Frontend with Vue 3",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.0",
+    "vue-router": "^4.2.0",
+    "element-plus": "^2.3.0",
+    "axios": "^1.4.0",
+    "pdfjs-dist": "^3.6.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.0",
+    "vite": "^4.3.0"
+  }
+}
