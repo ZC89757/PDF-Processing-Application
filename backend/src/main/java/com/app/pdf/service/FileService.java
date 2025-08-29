@@ -58,13 +58,12 @@ public class FileService {
             FileEntity fileEntity = new FileEntity();
             fileEntity.setFilename(filename);
             fileEntity.setSize(file.getSize());
-            
+            fileDao.insertFile(fileEntity);
             // 插入数据库获取ID
-            Long fileId = fileDao.insertFile(fileEntity);
-            fileEntity.setId(fileId);
-            
+            Long fileId = fileEntity.getId();
             // 保存文件到磁盘
             String filePath = storageRoot + "/" + fileId + ".pdf";
+            fileDao.updateFilePath(filePath, fileId);
             fileEntity.setPath(filePath);
             Path path = Paths.get(filePath);
             Files.write(path, file.getBytes());

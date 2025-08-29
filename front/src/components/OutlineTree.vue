@@ -1,17 +1,14 @@
 <template>
   <div class="outline-tree">
-    <ul class="outline-list">
-      <li 
-        v-for="item in outlines" 
-        :key="item.id" 
-        class="outline-item"
-        :class="{ 'level-' + item.level: true }"
-        @click="navigate(item.page)"
-      >
-        <span class="outline-title">{{ item.title }}</span>
-        <span class="outline-page">p.{{ item.page }}</span>
-      </li>
-    </ul>
+    <div
+      v-for="item in outline"
+      :key="item.id"
+      class="outline-item"
+      :class="{ ['level-' + item.level]: true }"
+      @click="navigate(item.page)"
+    >
+      {{ item.title }}
+    </div>
   </div>
 </template>
 
@@ -19,15 +16,14 @@
 export default {
   name: 'OutlineTree',
   props: {
-    outlines: {
+    outline: {
       type: Array,
-      default: () => []
+      required: true
     }
   },
-  emits: ['navigate'],
   methods: {
     navigate(page) {
-      this.$emit('navigate', page)
+      this.$emit('navigate', page);
     }
   }
 }
@@ -35,58 +31,42 @@ export default {
 
 <style scoped>
 .outline-tree {
-  color: #E5E7EB;
-}
-
-.outline-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  padding: 10px;
 }
 
 .outline-item {
-  padding: 8px 12px;
   cursor: pointer;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 5px 0;
+  border-left: 2px solid transparent;
 }
 
 .outline-item:hover {
-  background-color: #111827;
+  background-color: #f0f0f0;
 }
 
-.outline-item.level-1 {
-  padding-left: 12px;
+.level-1 {
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.outline-item.level-2 {
-  padding-left: 24px;
+.level-2 {
+  padding-left: 20px;
+  font-size: 14px;
 }
 
-.outline-item.level-3 {
-  padding-left: 36px;
-}
-
-.outline-item.level-4 {
-  padding-left: 48px;
-}
-
-.outline-item.level-5 {
-  padding-left: 60px;
-}
-
-.outline-title {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.outline-page {
-  color: #9CA3AF;
+.level-3 {
+  padding-left: 30px;
   font-size: 12px;
-  margin-left: 10px;
+}
+
+.level-4 {
+  padding-left: 40px;
+  font-size: 11px;
+}
+
+.level-5 {
+  padding-left: 50px;
+  font-size: 10px;
 }
 </style>

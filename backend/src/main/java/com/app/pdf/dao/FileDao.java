@@ -7,17 +7,37 @@ import java.util.List;
 
 @Mapper
 public interface FileDao {
-    
-    @Insert("INSERT INTO t_files(filename,size,path,status) VALUES(#{filename},#{size},#{path},'UPLOADED') RETURNING id")
+
+    @Insert("INSERT INTO t_files(filename,size,status) VALUES(#{filename},#{size},'UPLOADING')")
+    @SelectKey(
+            statement = "SELECT currval(pg_get_serial_sequence('t_files','id'))",
+            keyProperty = "id",
+            before = false,
+            resultType = Long.class
+    )
+    void insertFile(FileEntity file);
+
+    @Update("UPDATE t_files SET path=#{path},status='UPLOADED' WHERE id=#{id}")
     @Options(flushCache = Options.FlushCachePolicy.TRUE)
-    Long insertFile(FileEntity file);
-    
+    void updateFilePath(String path,  Long id);
+
     @Update("UPDATE t_files SET status='PARSING' WHERE id=#{id}")
     void updateStatusToParsing(Long id);
-    
-    @Update("UPDATE t_files SET status=#{status}, has_outline=#{hasOutline} WHERE id=#{id}")
-    void updateStatusAndOutline(@Param("id") Long id, @Param("status") String status, @Param("hasOutline") Boolean hasOutline);
-    
+
+    @Update({
+            "<script>",
+            "UPDATE t_files",
+            "  <set>",
+            "    <if test='status != null'>status = #{status},</if>",
+            "    has_outline = #{hasOutline}",
+            "  </set>",
+            "WHERE id = #{id}",
+            "</script>"
+    })
+    void updateStatusAndOutline(@Param("id") Long id,
+                                @Param("status") String status,
+                                @Param("hasOutline") Boolean hasOutline);
+
     @Update("UPDATE t_files SET summary=#{summary} WHERE id=#{id}")
     void updateSummary(@Param("id") Long id, @Param("summary") String summary);
     
