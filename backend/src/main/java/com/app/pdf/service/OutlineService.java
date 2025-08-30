@@ -68,7 +68,7 @@ public class OutlineService {
     private int getPageNumber(PDDocument document, PDPage page) {
         int index = 0;
         for (PDPage pdPage : document.getPages()) {
-            if (pdPage == page) {
+            if (pdPage.equals(page)) {
                 return index + 1; // 页码从1开始
             }
             index++;

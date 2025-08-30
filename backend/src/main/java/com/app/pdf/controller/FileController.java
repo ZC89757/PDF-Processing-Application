@@ -48,7 +48,6 @@ public class FileController {
     @PostMapping("/{id}/parse")
     public Result triggerParse(@PathVariable Long id) {
         parseService.enqueueParse(id);
-        parseService.parsePdf(id);
         return Result.success("解析任务已启动");
     }
     
