@@ -20,3 +20,6 @@ storage:
 logging:
   level:
     com.app.pdf: DEBUG
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

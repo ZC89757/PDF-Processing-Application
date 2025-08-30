@@ -1,18 +1,24 @@
 package com.app.pdf.service;
 
 import com.app.pdf.dao.FileDao;
+import com.app.pdf.dao.FileSegmentDao;
 import com.app.pdf.entity.FileEntity;
 import com.app.pdf.entity.FileOutlineEntity;
+import com.app.pdf.entity.FileSegmentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SummaryService {
     
     @Autowired
     private FileDao fileDao;
+    
+    @Autowired
+    private FileSegmentDao fileSegmentDao;
     
     @Autowired
     private AiClient aiClient;
@@ -47,9 +53,21 @@ public class SummaryService {
             prompt.append("\n");
         }
         
-        // 这里应该从文件段落中提取代表性内容
-        // 为简化实现，我们使用占位符
-        prompt.append("文档内容片段: [文档内容将在这里插入...]\n\n");
+        // 获取文档内容片段，每页取2段
+        prompt.append("文档内容片段:\n");
+
+        // 简化实现：获取前几页的内容片段（每页2段）
+        for (int page = 1; page <= 5; page++) {
+            List<FileSegmentEntity> segments = fileSegmentDao.getSegmentsByFileIdAndPage(fileId, page, 2);
+            if (!segments.isEmpty()) {
+                prompt.append("第").append(page).append("页:\n");
+                for (FileSegmentEntity segment : segments) {
+                    prompt.append(segment.getContent()).append("\n");
+                }
+                prompt.append("\n");
+            }
+        }
+        
         prompt.append("请根据以上信息生成简洁明了的文档摘要:");
         
         // 调用AI客户端生成摘要

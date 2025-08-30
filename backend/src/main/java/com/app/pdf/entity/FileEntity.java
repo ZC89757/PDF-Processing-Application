@@ -2,6 +2,8 @@ package com.app.pdf.entity;
 
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Data
 public class FileEntity {
@@ -11,6 +13,6 @@ public class FileEntity {
     private String path;
     private String status; // UPLOADED, PARSING, READY, FAILED
     private Boolean hasOutline;
-    private LocalDateTime uploadTime;
+    private OffsetDateTime uploadTime;
     private String summary;
 }

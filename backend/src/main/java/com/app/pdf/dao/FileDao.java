@@ -1,6 +1,7 @@
 package com.app.pdf.dao;
 
 import com.app.pdf.entity.FileEntity;
+import com.app.pdf.entity.FileOutlineEntity;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -59,8 +60,8 @@ public interface FileDao {
     List<FileEntity> listFiles(@Param("page") int page, @Param("size") int size, @Param("keyword") String keyword);
     
     @Select("SELECT * FROM t_files WHERE id = #{id}")
-    FileEntity getFileById(Long id);
+    FileEntity getFileById(@Param("id") Long id);
     
     @Select("SELECT title, page, level FROM t_file_outline WHERE file_id = #{fileId} ORDER BY id")
-    List<com.app.pdf.entity.FileOutlineEntity> getOutlinesByFileId(Long fileId);
+    List<FileOutlineEntity> getOutlinesByFileId(@Param("fileId") Long fileId);
 }
