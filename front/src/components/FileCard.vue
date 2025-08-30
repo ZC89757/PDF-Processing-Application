@@ -1,5 +1,5 @@
 <template>
-  <div class="file-card" @click="$emit('click')">
+  <div class="file-card" @click="$emit('click', {id: file.id, page: file.page})">
     <div class="card-content">
       <div class="thumbnail">
         <!-- PDF 第一页缩略图占位符 -->
@@ -14,6 +14,9 @@
           </el-tag>
           <el-tag v-if="file.has_outline" type="success" size="small" style="margin-left: 5px;">
             有目录
+          </el-tag>
+          <el-tag v-if="file.page" type="info" size="small" style="margin-left: 5px;">
+            第 {{ file.page }} 页
           </el-tag>
         </div>
         <div class="actions">

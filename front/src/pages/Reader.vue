@@ -141,18 +141,15 @@ export default {
       if (this.currentPage <= 1) return
       this.currentPage--
       this.updateRoute()
-      this.renderPage()
     },
     nextPage() {
       if (this.currentPage >= this.pageCount) return
       this.currentPage++
       this.updateRoute()
-      this.renderPage()
     },
     goToPage(page) {
       this.currentPage = page
       this.updateRoute()
-      this.renderPage()
     },
     updateRoute() {
       this.$router.replace({ 

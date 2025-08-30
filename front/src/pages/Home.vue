@@ -30,7 +30,7 @@
         v-for="file in fileList"
         :key="file.id"
         :file="file"
-        @click="goToReader(file.id)"
+        @click="goToReader"
       />
     </div>
     
@@ -128,10 +128,9 @@ export default {
       this.currentPage = 1
       this.loadFiles()
     },
-    goToReader(fileId) {
-      // 检查file中是否有page属性，如果有则跳转到对应页码
-      const file = this.fileList.find(f => f.id === fileId);
-      const page = file && file.page ? file.page : 1;
+    goToReader(fileInfo) {
+      const fileId = fileInfo.id;
+      const page = fileInfo.page || 1;
       
       this.$router.push({ 
         name: 'reader', 
