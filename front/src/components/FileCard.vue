@@ -142,17 +142,20 @@ export default {
 
 <style scoped>
 .file-card {
-  background-color: #1F2937;
+  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
   border-radius: 12px;
   padding: 15px;
   cursor: pointer;
-  transition: transform 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .file-card:hover {
-  transform: scale(1.01);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transform: scale(1.05) translateZ(10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  background: linear-gradient(135deg, #3B82F6, #38BDF8);
 }
 
 .card-content {
@@ -193,6 +196,9 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: 'Orbitron', sans-serif;
+  display: block;
+  width: 100%;
 }
 
 .upload-time {
@@ -208,4 +214,21 @@ export default {
 .actions {
   margin-top: 10px;
 }
+
+.actions .el-button {
+  transition: all 0.3s ease;
+  background-color: #10B981;
+  border-color: #10B981;
+}
+
+.actions .el-button:hover {
+  background-color: #34D399;
+  border-color: #34D399;
+}
+
+.actions .el-button:active {
+  transform: scale(0.95);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&display=swap');
 </style>

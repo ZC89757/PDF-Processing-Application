@@ -1,25 +1,22 @@
 <template>
-  <div class="home">
+  <div class="home" ref="home">
     <header class="header">
-      <h1>PDF 文档阅读与分析系统</h1>
       <div class="header-actions">
-        <el-button type="primary" @click="showUploadDialog" class="upload-btn">
-          <el-icon><Upload /></el-icon>
-          上传 PDF
-        </el-button>
+        <!-- 上传PDF按钮已移至App.vue导航栏 -->
       </div>
     </header>
     
-    <div class="search-container">
+    <div class="search-container" style="margin-top: -10px;">
       <el-input
         v-model="searchKeyword"
-        placeholder="搜索内容..."
+        :placeholder="currentPlaceholder"
         class="search-input"
         @keyup.enter="searchFiles"
       >
         <template #append>
-          <el-button @click="searchFiles">
+          <el-button @click="searchFiles" class="search-button">
             <el-icon><Search /></el-icon>
+            搜索
           </el-button>
         </template>
       </el-input>
@@ -34,30 +31,7 @@
       />
     </div>
     
-    <el-dialog
-      v-model="uploadDialogVisible"
-      title="上传 PDF 文件"
-      width="500px"
-    >
-      <el-upload
-        class="upload-demo"
-        drag
-        action="/api/files/upload"
-        :on-success="handleUploadSuccess"
-        :on-error="handleUploadError"
-        :before-upload="beforeUpload"
-      >
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">
-          拖拽文件到此处或 <em>点击上传</em>
-        </div>
-        <template #tip>
-          <div class="el-upload__tip">
-            仅支持 PDF 文件，大小不超过 200MB
-          </div>
-        </template>
-      </el-upload>
-    </el-dialog>
+    <!-- 上传对话框已移至App.vue -->
   </div>
 </template>
 
@@ -73,44 +47,30 @@ export default {
   data() {
     return {
       fileList: [],
-      uploadDialogVisible: false,
       searchKeyword: '',
       currentPage: 1,
-      pageSize: 20
+      pageSize: 20,
+      searchPlaceholders: [
+        '输入关键词，探索知识的海洋...',
+        '想找什么？PDF宝库任你搜索~',
+        '关键词输入，智能搜索启动！'
+      ],
+      currentPlaceholder: ''
     }
   },
   mounted() {
     this.loadFiles()
+    this.setRandomPlaceholder()
   },
   methods: {
-    showUploadDialog() {
-      this.uploadDialogVisible = true
+    setRandomPlaceholder() {
+      // 随机选择一个搜索提示词
+      const randomIndex = Math.floor(Math.random() * this.searchPlaceholders.length);
+      this.currentPlaceholder = this.searchPlaceholders[randomIndex];
     },
-    beforeUpload(file) {
-      const isPDF = file.type === 'application/pdf'
-      const isLt200M = file.size / 1024 / 1024 < 200
-      
-      if (!isPDF) {
-        this.$message.error('只能上传 PDF 文件!')
-      }
-      if (!isLt200M) {
-        this.$message.error('文件大小不能超过 200MB!')
-      }
-      
-      return isPDF && isLt200M
-    },
-    handleUploadSuccess(response, file, fileList) {
-      this.uploadDialogVisible = false
-      this.$message.success('文件上传成功!')
-      // 触发解析
-      if (response.data && response.data.id) {
-        axios.post(`/api/files/${response.data.id}/parse`)
-      }
-      this.loadFiles()
-    },
-    handleUploadError(error, file, fileList) {
-      this.$message.error('文件上传失败: ' + error.message)
-    },
+    
+    // 上传相关方法已移至App.vue
+    
     loadFiles() {
       axios.get('/api/files', {
         params: {
@@ -151,7 +111,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .header h1 {
@@ -169,8 +129,54 @@ export default {
 }
 
 .search-input {
-  border-radius: 12px;
-  background-color: #111827;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.search-input .el-input__wrapper {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.search-input .el-input__inner {
+  color: #fff !important;
+  font-size: 16px;
+}
+
+.search-input .el-input__inner::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.search-input .el-input-group__append {
+  background: linear-gradient(135deg, #3B82F6, #1E40AF) !important;
+  border: none !important;
+  color: white !important;
+  transition: all 0.3s ease;
+  padding: 0 15px !important;
+}
+
+.search-input .el-input-group__append:hover {
+  background: linear-gradient(135deg, #2563EB, #1E3A8A) !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.search-button {
+  background: transparent !important;
+  border: none !important;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-button .el-icon {
+  margin-right: 4px;
+  font-size: 16px;
 }
 
 .file-list {
