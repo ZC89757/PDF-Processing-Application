@@ -49,6 +49,7 @@ export default {
     getStatusText(status) {
       const statusMap = {
         'UPLOADED': '已上传',
+        'UPLOADING': '上传中',
         'PARSING': '解析中',
         'READY': '已完成',
         'FAILED': '失败'
@@ -58,6 +59,7 @@ export default {
     getStatusType(status) {
       const typeMap = {
         'UPLOADED': '',
+        'UPLOADING': '',
         'PARSING': 'warning',
         'READY': 'success',
         'FAILED': 'danger'

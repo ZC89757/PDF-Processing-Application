@@ -5,6 +5,7 @@ import com.app.pdf.entity.FileOutlineEntity;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface FileDao {
@@ -57,7 +58,7 @@ public interface FileDao {
             "ORDER BY f.upload_time DESC " +
             "LIMIT #{size} OFFSET (#{page} - 1) * #{size} " +
             "</script>")
-    List<FileEntity> listFiles(@Param("page") int page, @Param("size") int size, @Param("keyword") String keyword);
+    List<Map<String, Object>> listFiles(@Param("page") int page, @Param("size") int size, @Param("keyword") String keyword);
     
     @Select("SELECT * FROM t_files WHERE id = #{id}")
     FileEntity getFileById(@Param("id") Long id);

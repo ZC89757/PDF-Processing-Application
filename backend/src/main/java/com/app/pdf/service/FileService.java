@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -81,7 +82,7 @@ public class FileService {
         if (page < 1) page = 1;
         if (size < 1 || size > 100) size = 20;
         
-        List<FileEntity> files = fileDao.listFiles(page, size, keyword);
+        List<Map<String, Object>> files = fileDao.listFiles(page, size, keyword);
         return Result.success(files);
     }
     
