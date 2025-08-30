@@ -42,18 +42,18 @@ public interface FileDao {
 
     @Update("UPDATE t_files SET summary=#{summary} WHERE id=#{id}")
     void updateSummary(@Param("id") Long id, @Param("summary") String summary);
-    
+
     @Select("<script>" +
             "SELECT f.id, f.filename, f.upload_time, f.status, f.has_outline, " +
-            "(f.summary IS NOT NULL) AS summary_exists " +
+            "       (f.summary IS NOT NULL) AS summary_exists" +
+            "<if test='keyword != null and keyword != \"\"'>, s.page AS page</if> " +
             "FROM t_files f " +
-            "WHERE 1=1 " +
             "<if test='keyword != null and keyword != \"\"'> " +
-            "AND EXISTS ( " +
-            "   SELECT 1 FROM t_file_segments s " +
-            "   WHERE s.file_id = f.id " +
-            "   AND s.content ILIKE CONCAT('%', #{keyword}, '%') " +
-            ") " +
+            "  JOIN ( " +
+            "    SELECT file_id, page " +
+            "    FROM t_file_segments " +
+            "    WHERE content ILIKE CONCAT('%', #{keyword}, '%') " +
+            "  ) s ON s.file_id = f.id " +
             "</if> " +
             "ORDER BY f.upload_time DESC " +
             "LIMIT #{size} OFFSET (#{page} - 1) * #{size} " +

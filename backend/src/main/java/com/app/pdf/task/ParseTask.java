@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ParseTask {
-    
-    @Autowired
-    private FileService fileService;
+
     
     @Autowired
     private ParseService parseService;
