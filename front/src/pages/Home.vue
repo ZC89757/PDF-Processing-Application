@@ -129,7 +129,15 @@ export default {
       this.loadFiles()
     },
     goToReader(fileId) {
-      this.$router.push({ name: 'reader', params: { fileId } })
+      // 检查file中是否有page属性，如果有则跳转到对应页码
+      const file = this.fileList.find(f => f.id === fileId);
+      const page = file && file.page ? file.page : 1;
+      
+      this.$router.push({ 
+        name: 'reader', 
+        params: { fileId },
+        query: { page }
+      });
     }
   }
 }
