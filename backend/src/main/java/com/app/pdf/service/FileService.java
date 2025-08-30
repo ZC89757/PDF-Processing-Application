@@ -3,6 +3,7 @@ package com.app.pdf.service;
 import com.app.pdf.dao.FileDao;
 import com.app.pdf.entity.FileEntity;
 import com.app.pdf.model.Result;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class FileService {
     @Value("${storage.root:/data/files}")
     private String storageRoot;
     
+    @Getter
     private static final BlockingQueue<Long> parseQueue = new LinkedBlockingQueue<>();
     
     public Result saveUpload(MultipartFile file) {
@@ -89,8 +91,5 @@ public class FileService {
     public FileEntity getFileById(Long id) {
         return fileDao.getFileById(id);
     }
-    
-    public static BlockingQueue<Long> getParseQueue() {
-        return parseQueue;
-    }
+
 }
