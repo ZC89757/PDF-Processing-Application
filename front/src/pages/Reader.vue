@@ -59,11 +59,13 @@ export default {
       outlines: [],
       summary: '',
       summaryLoading: false,
-      pdfDoc: null,
       currentPage: 1,
       pageCount: 0,
       scale: 1.0
     }
+  },
+  created() {
+    this.pdfDoc= null
   },
   mounted() {
     this.loadOutline()
@@ -100,7 +102,6 @@ export default {
       try {
         const response = await axios.get(`/api/files/${this.fileId}/pdf`, { responseType: 'arraybuffer' })
         this.pdfDoc = await getDocument({ data: response.data }).promise
-
         this.pageCount = this.pdfDoc.numPages
         this.currentPage = this.page ?? 1
         await this.renderPage()
@@ -110,7 +111,6 @@ export default {
     },
     async renderPage() {
       if (!this.pdfDoc) return
-      
       try {
         const page = await this.pdfDoc.getPage(this.currentPage)
         const viewport = page.getViewport({ scale: this.scale })
