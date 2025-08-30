@@ -44,7 +44,11 @@ public interface FileDao {
     void updateSummary(@Param("id") Long id, @Param("summary") String summary);
 
     @Select("<script>" +
-            "SELECT f.id, f.filename, f.upload_time, f.status, f.has_outline, " +
+            "SELECT " +
+            "<if test='keyword != null and keyword != \"\"'> " +
+            "DISTINCT ON (s.page) " +
+            "</if> " +
+            "f.id, f.filename, f.upload_time, f.status, f.has_outline, " +
             "       (f.summary IS NOT NULL) AS summary_exists" +
             "<if test='keyword != null and keyword != \"\"'>, s.page AS page</if> " +
             "FROM t_files f " +
@@ -55,7 +59,12 @@ public interface FileDao {
             "    WHERE content ILIKE CONCAT('%', #{keyword}, '%') " +
             "  ) s ON s.file_id = f.id " +
             "</if> " +
-            "ORDER BY f.upload_time DESC " +
+            "<if test='keyword != null and keyword != \"\"'> " +
+            "  ORDER BY s.page, f.upload_time DESC " +
+            "</if> " +
+            "<if test='keyword == null and keyword == \"\"'> " +
+            "  ORDER BY f.upload_time DESC " +
+            "</if> "+
             "LIMIT #{size} OFFSET (#{page} - 1) * #{size} " +
             "</script>")
     List<Map<String, Object>> listFiles(@Param("page") int page, @Param("size") int size, @Param("keyword") String keyword);

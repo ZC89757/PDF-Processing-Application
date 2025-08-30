@@ -103,10 +103,16 @@ export default {
       this.$router.push('/');
       // 刷新文件列表
       if (this.$route.path === '/') {
-        const homeComponent = this.$refs.routerView?.$refs.home;
-        if (homeComponent && homeComponent.loadFiles) {
-          homeComponent.loadFiles();
-        }
+        // 使用事件总线或直接调用子组件方法来刷新文件列表
+        this.$nextTick(() => {
+          const homeComponent = this.$refs.routerView?.$refs.home;
+          if (homeComponent && typeof homeComponent.loadFiles === 'function') {
+            homeComponent.loadFiles();
+          } else {
+            // 如果无法直接调用组件方法，则重新加载当前路由
+            this.$router.go(0);
+          }
+        });
       }
     },
     

@@ -25,8 +25,6 @@ public class OutlineController {
     }
 
     private Object buildTree(List<FileOutlineEntity> outlines) {
-        // 构建目录树的逻辑
-        // 为简化实现，直接返回列表
         return outlines;
     }
 }

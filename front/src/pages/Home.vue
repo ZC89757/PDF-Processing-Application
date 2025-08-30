@@ -1,11 +1,5 @@
 <template>
   <div class="home" ref="home">
-    <header class="header">
-      <div class="header-actions">
-        <!-- 上传PDF按钮已移至App.vue导航栏 -->
-      </div>
-    </header>
-    
     <div class="search-container" style="margin-top: -10px;">
       <el-input
         v-model="searchKeyword"
@@ -30,8 +24,6 @@
         @click="goToReader"
       />
     </div>
-    
-    <!-- 上传对话框已移至App.vue -->
   </div>
 </template>
 
@@ -68,8 +60,6 @@ export default {
       const randomIndex = Math.floor(Math.random() * this.searchPlaceholders.length);
       this.currentPlaceholder = this.searchPlaceholders[randomIndex];
     },
-    
-    // 上传相关方法已移至App.vue
     
     loadFiles() {
       axios.get('/api/files', {
