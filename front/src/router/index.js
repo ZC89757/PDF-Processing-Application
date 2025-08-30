@@ -12,7 +12,10 @@ const routes = [
     path: '/reader/:fileId',
     name: 'reader',
     component: Reader,
-    props: route => ({ page: parseInt(route.query.page) || 1 })
+    props: route => ({ 
+      page: parseInt(route.query.page) || 1,
+      fileId: route.params.fileId
+    })
   }
 ]
 

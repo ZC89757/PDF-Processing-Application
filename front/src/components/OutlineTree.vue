@@ -1,7 +1,7 @@
 <template>
   <div class="outline-tree">
     <div
-      v-for="item in outline"
+      v-for="item in outlines"
       :key="item.id"
       class="outline-item"
       :class="{ ['level-' + item.level]: true }"
@@ -16,9 +16,8 @@
 export default {
   name: 'OutlineTree',
   props: {
-    outline: {
+    outlines: {
       type: Array,
-      required: true
     }
   },
   methods: {

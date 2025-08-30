@@ -4,7 +4,7 @@
       <!-- 左侧目录 -->
       <div class="outline-panel">
         <h3>文档目录</h3>
-        <outline-tree :outlines="outlines" @navigate="goToPage" />
+        <outline-tree v-if="outlines" :outlines="outlines" @navigate="goToPage" />
       </div>
       
       <!-- 中间PDF查看器 -->
@@ -33,10 +33,10 @@
 import OutlineTree from '../components/OutlineTree.vue'
 import SummaryPanel from '../components/SummaryPanel.vue'
 import axios from 'axios'
-import * as pdfjsLib from 'pdfjs-dist/build/pdf'
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist/build/pdf'
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker?url'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
+GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 export default {
   name: 'Reader',
@@ -98,16 +98,12 @@ export default {
     },
     async loadPdf() {
       try {
-        // 这里应该从后端获取PDF文件路径
-        // 为简化实现，使用占位符
-        // const response = await axios.get(`/api/files/${this.fileId}/pdf`, { responseType: 'blob' })
-        // const pdfData = await response.data.arrayBuffer()
-        // this.pdfDoc = await pdfjsLib.getDocument(pdfData).promise
-        
-        // 模拟PDF文档
-        this.pageCount = 10
-        this.currentPage = this.page
-        this.renderPage()
+        const response = await axios.get(`/api/files/${this.fileId}/pdf`, { responseType: 'arraybuffer' })
+        this.pdfDoc = await getDocument({ data: response.data }).promise
+
+        this.pageCount = this.pdfDoc.numPages
+        this.currentPage = this.page ?? 1
+        await this.renderPage()
       } catch (error) {
         console.error('加载PDF失败:', error)
       }

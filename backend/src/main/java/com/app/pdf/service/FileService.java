@@ -85,6 +85,10 @@ public class FileService {
         return Result.success(files);
     }
     
+    public FileEntity getFileById(Long id) {
+        return fileDao.getFileById(id);
+    }
+    
     public static BlockingQueue<Long> getParseQueue() {
         return parseQueue;
     }
